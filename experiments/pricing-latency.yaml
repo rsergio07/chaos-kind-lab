@@ -1,0 +1,17 @@
+# Hypothesis: with 800ms more latency on pricing, checkouts miss the latency SLO
+# but customers, who wait up to 1 second, still get an answer.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: pricing-latency
+  namespace: shop
+spec:
+  action: delay
+  mode: all
+  selector:
+    namespaces: [shop]
+    labelSelectors: { app: pricing }
+  delay:
+    latency: 800ms
+    jitter: 20ms
+  duration: 180s
